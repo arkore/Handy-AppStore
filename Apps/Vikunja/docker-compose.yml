@@ -1,0 +1,70 @@
+name: vikunja
+
+services:
+  vikunja:
+    image: vikunja/vikunja:0.23
+    deploy:
+      resources:
+        reservations:
+          memory: 64M
+    cpu_shares: 20
+    restart: unless-stopped
+    network_mode: bridge
+    container_name: vikunja
+    environment:
+      VIKUNJA_SERVICE_PUBLICURL: http://<the public url where vikunja is reachable>
+      VIKUNJA_SERVICE_INTERFACE: 3456
+      VIKUNJA_DATABASE_TYPE: postgres
+      VIKUNJA_DATABASE_HOST: localhost
+      VIKUNJA_DATABASE_DATABASE: vikunja
+      VIKUNJA_DATABASE_USER: vikunja
+      VIKUNJA_DATABASE_PASSWORD: vikunja
+      VIKUNJA_SERVICE_JWTSECRET: <a super secure random secret>
+      VIKUNJA_SERVICE_CUSTOMLOGOURL: https://kolaente.dev/avatars/dd73c49581a6904336c5d40fb66ef950
+      VIKUNJA_SERVICE_TIMEZONE: Europe/Berlin
+      VIKUNJA_SERVICE_ENABLEREGISTRATION: true
+    labels:
+      icon: https://kolaente.dev/avatars/dd73c49581a6904336c5d40fb66ef950
+    ports:
+      - target: 3456
+        published: "3456"
+        protocol: tcp
+    volumes:
+      - type: bind
+        source: /DATA/AppData/$AppID/files
+        target: /app/vikunja/files
+    x-casaos:
+      ports:
+        - container: "3456"
+          description:
+            en_us: "WebUI Port"
+      volumes:
+        - container: /app/vikunja/files
+          description:
+            en_us: "Application data directory"
+    privileged: false
+x-casaos:
+  store_app_id: vikunja
+  architectures:
+    - amd64
+    - arm64
+  main: vikunja
+  author: Arkore
+  category: "Project Management"
+  developer: kolaente
+  icon: https://kolaente.dev/avatars/dd73c49581a6904336c5d40fb66ef950
+  thumbnail: ""
+  is_uncontrolled: false
+  scheme: http
+  hostname: ""
+  index: /
+  port_map: "3456"
+  title:
+    en_us: Vikunja
+  tagline:
+    en_us: Organize everything, on all platforms
+  description:
+    en_us:
+      "Organize all of your tasks in projects. Create subprojects organize everything hierarchical and keep related stuff grouped together.
+      Vikunja lets you easily share a project with another user or a whole team! Assignments show who's working on what.
+      You can view your tasks in the classic list view - or in a Gantt Chart, or Table view, or Kanban Board. Whatever you need!"

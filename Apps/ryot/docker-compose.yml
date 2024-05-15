@@ -1,0 +1,53 @@
+name: ryot
+services:
+  ryot:
+    image: ghcr.io/ignisda/ryot:v5.3.4
+    deploy:
+      resources:
+        reservations:
+          memory: 64M
+    cpu_shares: 20
+    restart: unless-stopped
+    network_mode: bridge
+    container_name: ryot
+    environment:
+      - DATABASE_URL=postgres://ryot:ryot@localhost:5432/ryot
+      - FRONTEND_INSECURE_COOKIES=true
+    labels:
+      icon: https://raw.githubusercontent.com/IgnisDa/ryot/main/docs/logo.png
+    ports:
+      - target: 8000
+        published: "8077"
+        protocol: tcp
+    x-casaos:
+      ports:
+        - container: "8000"
+          description:
+            en_us: "WebUI Port"
+      volumes:
+        - container: /data
+          description:
+            en_us: "Application data directory"
+    privileged: false
+x-casaos:
+  store_app_id: ryot
+  architectures:
+    - amd64
+    - arm64
+  main: ryot
+  author: Arkore
+  category: Notes
+  developer: hay-kot
+  icon: https://raw.githubusercontent.com/IgnisDa/ryot/main/docs/logo.png
+  thumbnail: ""
+  is_uncontrolled: false
+  scheme: http
+  hostname: ""
+  index: /
+  port_map: "8077"
+  title:
+    en_us: Ryot (Roll Your Own Tracker)
+  tagline:
+    en_us: RYOT aims to be the only self hosted tracker you will ever need!
+  description:
+    en_us: "Imagine you have a special notebook where you can write down all the media you have consumed, like books you've read, shows you have watched, video games you have played or workouts you have done. Now, imagine that instead of a physical notebook, you have a special tool on your computer or phone that lets you keep track of all these digitally."
