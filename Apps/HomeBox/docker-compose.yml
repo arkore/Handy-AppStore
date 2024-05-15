@@ -1,0 +1,61 @@
+name: homebox
+services:
+  homebox:
+    image: ghcr.io/hay-kot/homebox:v0.10.3
+    deploy:
+      resources:
+        reservations:
+          memory: 64M
+    cpu_shares: 20
+    restart: unless-stopped
+    network_mode: bridge
+    container_name: homebox
+    environment:
+      - HBOX_LOG_LEVEL=info
+      - HBOX_LOG_FORMAT=text
+      - HBOX_WEB_MAX_UPLOAD_SIZE=10
+      - HBOX_OPTIONS_ALLOW_REGISTRATION=true
+      - HBOX_OPTIONS_AUTO_INCREMENT_ASSET_ID=true
+    labels:
+      icon: https://hay-kot.github.io/homebox/assets/img/favicon.svg
+    ports:
+      - target: 7745
+        published: "4073"
+        protocol: tcp
+    volumes:
+      - type: bind
+        source: /DATA/AppData/$AppID/data
+        target: /data
+    x-casaos:
+      ports:
+        - container: "4073"
+          description:
+            en_us: "WebUI Port"
+      volumes:
+        - container: /data
+          description:
+            en_us: "Application data directory"
+    privileged: false
+x-casaos:
+  store_app_id: homebox
+  main: homebox
+  author: Arkore
+  category: Notes
+  developer: hay-kot
+  icon: https://hay-kot.github.io/homebox/assets/img/favicon.svg
+  thumbnail: ""
+  is_uncontrolled: false
+  scheme: http
+  hostname: ""
+  index: /
+  port_map: "4073"
+  title:
+    en_us: HomeBox
+  tagline:
+    en_us: Homebox is the inventory and organization system built for the Home User
+  description:
+    en_us:
+      "With a focus on simplicity and ease of use, Homebox is the perfect solution for your home inventory, organization, and management needs. While developing this project, I've tried to keep the following principles in mind:
+      1. Simple - Homebox is designed to be simple and easy to use. No complicated setup or configuration required. Use either a single docker container, or deploy yourself by compiling the binary for your platform of choice.
+      2. Blazingly Fast - Homebox is written in Go, which makes it extremely fast and requires minimal resources to deploy. In general idle memory usage is less than 50MB for the whole container.
+      3. Portable - Homebox is designed to be portable and run on anywhere. We use SQLite and an embedded Web UI to make it easy to deploy, use, and backup."

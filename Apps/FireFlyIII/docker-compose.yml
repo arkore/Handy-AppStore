@@ -1,0 +1,112 @@
+name: fireflyiii
+services:
+  fireflyiii_app:
+    image: fireflyiii/core:version-6
+    deploy:
+      resources:
+        reservations:
+          memory: 128M
+        limits:
+          memory: 512M
+    cpu_shares: 20
+    restart: unless-stopped
+    network_mode: bridge
+    container_name: firefly_iii_core
+    environment:
+      - ALLOW_WEBHOOKS=false
+      - APP_DEBUG=false
+      - APP_ENV=production
+      - APP_KEY=replace_me
+      - APP_LOG_LEVEL=notice
+      - APP_NAME=FireflyIII
+      - APP_URL=http://localhost:955/
+      - AUDIT_LOG_LEVEL=emergency
+      - AUTHENTICATION_GUARD=web
+      - BROADCAST_DRIVER=log
+      - CACHE_DRIVER=file
+      - CACHE_PREFIX=firefly
+      - COOKIE_PATH=/
+      - COOKIE_SAMESITE=lax
+      - COOKIE_SECURE=false
+      - DB_CONNECTION=pgsql
+      - DB_DATABASE=fireflydb
+      - DB_HOST=localhost
+      - DB_PASSWORD=firefly
+      - DB_PORT=5432
+      - DB_USERNAME=firefly
+      - DEFAULT_LANGUAGE=en_US
+      - DEFAULT_LOCALE=equal
+      - DISABLE_CSP_HEADER=false
+      - DISABLE_FRAME_HEADER=false
+      - DKR_BUILD_LOCALE=false
+      - DKR_RUN_MIGRATION=true
+      - DKR_RUN_PASSPORT_INSTALL=true
+      - DKR_RUN_REPORT=true
+      - DKR_RUN_UPGRADE=true
+      - DKR_RUN_VERIFY=true
+      - ENABLE_EXCHANGE_RATES=false
+      - ENABLE_EXTERNAL_MAP=true
+      - ENABLE_EXTERNAL_RATES=true
+      - FIREFLY_III_LAYOUT=v1
+      - LOG_CHANNEL=stack
+      - PGSQL_SCHEMA=public
+      - PGSQL_SSL_CERT=null
+      - PGSQL_SSL_CRL_FILE=null
+      - PGSQL_SSL_KEY=null
+      - PGSQL_SSL_MODE=prefer
+      - PGSQL_SSL_ROOT_CERT=null
+      - QUEUE_DRIVER=sync
+      - SEND_ERROR_MESSAGE=true
+      - SEND_REPORT_JOURNALS=true
+      - SESSION_DRIVER=file
+      - SITE_OWNER=mail@example.com
+      - STATIC_CRON_TOKEN=100c7d319ec544ec9101e226c8e2420d
+      - TRUSTED_PROXIES=**
+      - TZ=Europe/Amsterdam
+    hostname: firefly_iii_core
+    labels:
+      icon: https://firefly-iii.org/assets/favicon/favicon.ico
+    ports:
+      - target: 8080
+        published: "955"
+        protocol: tcp
+    volumes:
+      - type: bind
+        source: /DATA/AppData/$AppID/upload
+        target: /var/www/html/storage/upload
+    x-casaos:
+      ports:
+        - container: "955"
+          description:
+            en_us: "WebUI Port"
+      volumes:
+        - container: /var/www/html/storage/upload
+          description:
+            en_us: "Upload location in Firefly III container"
+    privileged: false
+x-casaos:
+  store_app_id: fireflyiii
+  main: fireflyiii_app
+  author: Arkore
+  category: Finance
+  developer: "James Cole"
+  icon: https://firefly-iii.org/assets/favicon/favicon.ico
+  thumbnail: ""
+  is_uncontrolled: false
+  scheme: http
+  hostname: ""
+  index: /
+  port_map: "955"
+  title:
+    en_us: Firefly III
+  tagline:
+    en_us: A free and open source personal finance manager
+  description:
+    en_us:
+      Firefly III features a double-entry bookkeeping system. You can quickly
+      enter and organize your transactions in multiple currencies. Name your
+      poison. Do you like to work with tags? Need to budget your expenses? Want
+      to categorize all of your hobby expenses? Look no further. Firefly III
+      supports all kinds. Budgets can be expanded with limits in multiple
+      currencies, so you can budget both your daily household expenses and what
+      you spend in Imperial Credits when visiting Tatooine.
