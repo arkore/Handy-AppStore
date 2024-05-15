@@ -38,6 +38,9 @@ services:
     privileged: false
 x-casaos:
   store_app_id: homebox
+  architectures:
+    - amd64
+    - arm64
   main: homebox
   author: Arkore
   category: Notes

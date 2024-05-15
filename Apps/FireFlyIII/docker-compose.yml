@@ -86,6 +86,9 @@ services:
     privileged: false
 x-casaos:
   store_app_id: fireflyiii
+  architectures:
+    - amd64
+    - arm64
   main: fireflyiii_app
   author: Arkore
   category: Finance
